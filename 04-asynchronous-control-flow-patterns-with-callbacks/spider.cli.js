@@ -1,5 +1,6 @@
 import { spider } from './spider.js'
 
+// node spider.cli.js http://www.example.com
 spider(process.argv[2], (err, filename, downloaded) => {
   if (err) {
     console.error(err)
