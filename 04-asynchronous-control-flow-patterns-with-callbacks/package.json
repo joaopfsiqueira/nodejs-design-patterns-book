@@ -1,5 +1,6 @@
 {
   "name": "nodejs-design-patterns-book",
+  "type": "module",
   "version": "1.0.0",
   "description": "- I created this repo to centralize the examples and challenges within \"NodeJs Design Patterns\" book.",
   "main": "index.js",
