@@ -1,16 +1,21 @@
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import path from 'path'
+import { URL } from 'url'
+import slug from 'slug'
 
-export const WORDS_PER_MINUTE = 200
+export function urlToFilename (url) {
+  const parsedUrl = new URL(url)
+  const urlPath = parsedUrl.pathname.split('/')
+    .filter(function (component) {
+      return component !== ''
+    })
+    .map(function (component) {
+      return slug(component, { remove: null })
+    })
+    .join('/')
+  let filename = path.join(parsedUrl.hostname, urlPath)
+  if (!path.extname(filename).match(/htm/)) {
+    filename += '.html'
+  }
 
-export function cn(...inputs) {
-  return twMerge(clsx(inputs))
-}
-
-export function formatDate(date) {
-  return date.toISOString().substring(0, 10)
-}
-
-export function calculateReadingTime(text) {
-  return Math.ceil(text.split(' ').length / WORDS_PER_MINUTE)
+  return filename
 }
