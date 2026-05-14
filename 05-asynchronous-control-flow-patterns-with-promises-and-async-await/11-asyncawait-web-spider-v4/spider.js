@@ -20,21 +20,13 @@ async function spiderLinks (currentUrl, content, nesting) {
   if (nesting === 0) {
     return
   }
-
   const links = getPageLinks(currentUrl, content)
-  const promises = links.map(link => spider(link, nesting - 1))
-
-  return Promise.all(promises)
+  for (const link of links) {
+    await spider(link, nesting - 1)
+  }
 }
 
-const spidering = new Set()
-
 export async function spider (url, nesting) {
-  if (spidering.has(url)) {
-    return
-  }
-  spidering.add(url)
-
   const filename = urlToFilename(url)
   let content
   try {
