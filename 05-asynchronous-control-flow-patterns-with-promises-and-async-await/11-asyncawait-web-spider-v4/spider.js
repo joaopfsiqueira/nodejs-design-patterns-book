@@ -4,6 +4,7 @@ import superagent from 'superagent'
 import mkdirp from 'mkdirp'
 import { urlToFilename, getPageLinks } from './utils.js'
 import { promisify } from 'util'
+import { TaskQueuePC } from './TaskQueuePC.js'
 
 const mkdirpPromises = promisify(mkdirp)
 
@@ -16,28 +17,41 @@ async function download (url, filename) {
   return content
 }
 
-async function spiderLinks (currentUrl, content, nesting) {
+async function spiderLinks (currentUrl, content, nesting, queue) {
   if (nesting === 0) {
     return
   }
+
   const links = getPageLinks(currentUrl, content)
-  for (const link of links) {
-    await spider(link, nesting - 1)
-  }
+  const promises = links.map(link => spiderTask(link, nesting - 1, queue))
+
+  return Promise.all(promises)
 }
 
-export async function spider (url, nesting) {
-  const filename = urlToFilename(url)
-  let content
-  try {
-    content = await fsPromises.readFile(filename, 'utf8')
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
-      throw err
-    }
+const spidering = new Set()
 
-    content = await download(url, filename)
+async function spiderTask (url, nesting, queue) {
+  if (spidering.has(url)) {
+    return
   }
+  spidering.add(url)
 
-  return spiderLinks(url, content, nesting)
+  const filename = urlToFilename(url)
+  const content = await queue.runTask(async () => {
+    try {
+      return await fsPromises.readFile(filename, 'utf8')
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err
+      }
+
+      // The file doesn't exist, so let’s download it
+      return download(url, filename)
+    }
+  })
+  return spiderLinks(url, content, nesting, queue)
+}
+
+export async function spider (url, nesting, concurrency) {
+  return spiderTask(url, nesting, new TaskQueuePC(concurrency))
 }
