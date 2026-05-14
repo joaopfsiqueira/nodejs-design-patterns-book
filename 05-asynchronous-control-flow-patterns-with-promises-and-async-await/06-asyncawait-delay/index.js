@@ -17,8 +17,6 @@ async function playingWithDelays () {
 
   return 'done'
 }
-
-playingWithDelays()
-  .then(result => {
-    console.log(`After 4 seconds: ${result}`)
-  })
+// top-level await is supported in ES modules, but not in CommonJS modules, so we can only use it if we run this file with the --experimental-modules flag and give it a .mjs extension
+const result = await playingWithDelays()
+console.log(`After 4 seconds: ${result}`)
