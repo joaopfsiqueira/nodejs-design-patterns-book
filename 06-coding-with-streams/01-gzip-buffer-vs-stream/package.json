@@ -1,0 +1,13 @@
+{
+  "name": "01-gzip-buffer-vs-stream",
+  "version": "1.0.0",
+  "main": "gzip-buffer.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
