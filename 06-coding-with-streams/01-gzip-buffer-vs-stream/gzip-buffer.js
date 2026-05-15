@@ -5,8 +5,17 @@ const gzipPromise = promisify(gzip) // note: gzip is a callback-based function
 
 const filename = process.argv[2]
 
-const data = await readFile(filename)
-const gzippedData = await gzipPromise(data)
-await writeFile(`${filename}.gz`, gzippedData)
+async function main () {
+  try {
+    console.time('gzip')
+    const data = await readFile(filename)
+    const gzippedData = await gzipPromise(data)
+    await writeFile(`${filename}.gz`, gzippedData)
+    console.timeEnd('gzip')
+    console.log('File successfully compressed')
+  } catch (error) {
+    console.error('Error occurred while compressing file:', error)
+  }
+}
 
-console.log('File successfully compressed')
+main()

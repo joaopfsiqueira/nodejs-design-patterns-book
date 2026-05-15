@@ -3,7 +3,12 @@ import { createGzip } from 'zlib'
 
 const filename = process.argv[2]
 
-createReadStream(filename)
-  .pipe(createGzip())
-  .pipe(createWriteStream(`${filename}.gz`))
-  .on('finish', () => console.log('File successfully compressed'))
+async function main () {
+  createReadStream(filename)
+    .pipe(createGzip())
+    .pipe(createWriteStream(`${filename}.gz`))
+    .on('finish', () => console.log('File successfully compressed'))
+    .on('error', (error) => console.error('Error occurred while compressing file:', error))
+}
+
+main()
