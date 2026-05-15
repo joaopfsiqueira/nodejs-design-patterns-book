@@ -9,12 +9,13 @@ export class RandomStream extends Readable {
     this.emittedBytes = 0
   }
 
+
   _read (size) {
-    const chunk = chance.string({ length: size }) // ①
-    this.push(chunk, 'utf8') // ②
-    this.emittedBytes += chunk.length
-    if (chance.bool({ likelihood: 5 })) { // ③
-      this.push(null)
+    const chunk = chance.string({ length: size }) // construct a random string of the requested size
+    this.push(chunk, 'utf8') // push the chunk to the internal buffer
+    this.emittedBytes += chunk.length // keep track of the total number of emitted bytes
+    if (chance.bool({ likelihood: 5 })) { // randomly end the stream with a 5% chance
+      this.push(null) // signal the end of the stream
     }
   }
 }
