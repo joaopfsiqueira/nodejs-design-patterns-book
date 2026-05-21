@@ -4,9 +4,9 @@ import { Readable, Transform } from 'node:stream'
 export function concatFiles(dest, files) {
   return new Promise((resolve, reject) => {
     const destStream = createWriteStream(dest)
-    Readable.from(files)
+    Readable.from(files) // creates a readable stream from the array of file names
       .pipe(
-        new Transform({
+        new Transform({ // the transform stream will read file names, create read streams for each file, and pipe them to the destination stream
           objectMode: true,
           transform(filename, _enc, done) {
             const src = createReadStream(filename)
