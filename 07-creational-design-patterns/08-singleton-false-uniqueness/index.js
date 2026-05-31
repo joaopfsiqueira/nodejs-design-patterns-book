@@ -5,3 +5,5 @@ const isSame = getDbFromA() === getDbFromB()
 console.log(
   `Is the db instance in package-a the same as package-b? ${isSame ? 'YES' : 'NO'}`
 )
+
+global.dbInstance = 'I am a global db instance'
