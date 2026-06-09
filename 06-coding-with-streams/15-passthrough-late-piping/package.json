@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "keywords": [],
-  "author": "Luciano Mammino and Mario Casciaro",
+  "author": "Joao Siqueira",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.7"

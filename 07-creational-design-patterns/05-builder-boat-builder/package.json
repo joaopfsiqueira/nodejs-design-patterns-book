@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "keywords": [],
-  "author": "Luciano Mammino and Mario Casciaro",
+  "author": "Joao Siqueira",
   "license": "MIT",
   "devDependencies": {
     "tsx": "^4.19.2"

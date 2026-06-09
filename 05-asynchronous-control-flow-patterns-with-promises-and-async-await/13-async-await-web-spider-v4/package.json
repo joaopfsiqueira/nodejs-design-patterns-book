@@ -1,6 +1,7 @@
 {
   "name": "11-asyncawait-web-spider-v4",
   "version": "1.0.0",
+  "author": "Joao Siqueira",
   "private": true,
   "type": "module",
   "scripts": {
